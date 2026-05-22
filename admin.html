@@ -511,7 +511,60 @@
       </div>
     </div>
 
-    <!-- MEMBERS TABLE -->
+    <!-- COMMISSION IMPORT -->
+    <div class="section-header" style="margin-top:2.5rem;">
+      <div class="section-title">Import Commission Data</div>
+    </div>
+
+    <div class="table-wrap" style="padding:1.5rem;margin-bottom:2rem;">
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px;">Exchange</label>
+        <select class="month-filter" id="importExchange" style="margin-bottom:1rem;">
+          <option value="Bybit">Bybit</option>
+          <option value="Binance">Binance</option>
+          <option value="OKX">OKX</option>
+          <option value="MEXC">MEXC</option>
+          <option value="Bitget">Bitget</option>
+          <option value="KuCoin">KuCoin</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px;">Paste commission data below (copy directly from exchange dashboard)</label>
+        <textarea id="importData" style="width:100%;background:#111;border:1px solid #222;border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;resize:vertical;min-height:140px;line-height:1.6;" placeholder="Paste your commission data here...
+Example format:
+UID    Changes (USDT)    Percentage
+123456789    0.45    25%
+123456789    0.32    25%
+987654321    1.20    25%"></textarea>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="add-btn" onclick="importCommissions()">Parse & Calculate</button>
+        <input type="file" id="csvUpload" accept=".csv" style="display:none" onchange="importCSV()" />
+        <button class="add-btn" style="background:var(--bg3);color:var(--text2);border:1px solid var(--border2);" onclick="document.getElementById('csvUpload').click()">Upload CSV</button>
+      </div>
+
+      <!-- IMPORT RESULTS -->
+      <div id="importResults" style="margin-top:1.5rem;display:none;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem;">Parsed Results</div>
+        <table style="min-width:unset;">
+          <thead>
+            <tr>
+              <th>UID</th>
+              <th>Total Commission (USDT)</th>
+              <th>Their Cashback (25%)</th>
+              <th>Your Cut (25%)</th>
+              <th>Matched Member</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="importTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+
     <div class="section-header">
       <div class="section-title">Members</div>
       <div style="display:flex;gap:10px;align-items:center;">
@@ -624,7 +677,105 @@
     return vol * fee * comm * 0.50;
   }
 
-  // LOGIN
+  // COMMISSION IMPORT
+  function importCommissions() {
+    const raw = document.getElementById('importData').value.trim();
+    const exchange = document.getElementById('importExchange').value;
+    if (!raw) { alert('Please paste some data first.'); return; }
+
+    const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const commissionMap = {};
+
+    for (const line of lines) {
+      // Split by tab or multiple spaces
+      const parts = line.split(/\t|  +/).map(p => p.trim()).filter(p => p.length > 0);
+      if (parts.length < 2) continue;
+
+      // Try to find UID (long number) and commission (decimal number)
+      let uid = null;
+      let commission = null;
+
+      for (const part of parts) {
+        const num = parseFloat(part.replace(/[^0-9.]/g, ''));
+        if (!isNaN(num)) {
+          // If it looks like a UID (integer, 6+ digits)
+          if (/^\d{6,}$/.test(part.trim()) && uid === null) {
+            uid = part.trim();
+          }
+          // If it looks like a commission amount (decimal or small number)
+          else if (commission === null && num < 100000) {
+            commission = num;
+          }
+        }
+      }
+
+      if (uid && commission !== null) {
+        commissionMap[uid] = (commissionMap[uid] || 0) + commission;
+      }
+    }
+
+    const uids = Object.keys(commissionMap);
+    if (uids.length === 0) {
+      alert('Could not parse any data. Make sure you copied the UID and commission columns.');
+      return;
+    }
+
+    // Match UIDs to members
+    const tbody = document.getElementById('importTable');
+    tbody.innerHTML = uids.map(uid => {
+      const total = commissionMap[uid];
+      const cashback = total * 0.25;
+      const yourCut = total * 0.25;
+      const matched = members.find(m => m.uid === uid);
+      return `
+        <tr>
+          <td class="td-mono">${uid}</td>
+          <td class="cashback-val">$${total.toFixed(4)}</td>
+          <td class="cashback-val">$${cashback.toFixed(4)}</td>
+          <td class="td-mono" style="color:var(--amber)">$${yourCut.toFixed(4)}</td>
+          <td>${matched ? `<span style="color:var(--green)">${matched.name}</span>` : `<span style="color:var(--text3)">No match — <button class="action-btn" onclick="linkUID('${uid}')">Link to member</button></span>`}</td>
+          <td>${matched ? `<button class="action-btn" onclick="applyCommission('${uid}', ${total}, '${exchange}')">Apply</button>` : '—'}</td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('importResults').style.display = 'block';
+  }
+
+  function importCSV() {
+    const file = document.getElementById('csvUpload').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('importData').value = e.target.result;
+      importCommissions();
+    };
+    reader.readAsText(file);
+  }
+
+  function linkUID(uid) {
+    const name = prompt('Enter the member name to link this UID to:');
+    if (!name) return;
+    const index = members.findIndex(m => m.name.toLowerCase() === name.toLowerCase());
+    if (index === -1) { alert('Member not found. Check the name and try again.'); return; }
+    members[index].uid = uid;
+    save();
+    importCommissions();
+    alert('UID linked to ' + members[index].name);
+  }
+
+  function applyCommission(uid, total, exchange) {
+    const month = document.getElementById('monthFilter').value;
+    const member = members.find(m => m.uid === uid);
+    if (!member) return;
+    member.commission = (member.commission || 0) + total;
+    member.month = month;
+    member.exchange = exchange;
+    save();
+    renderTable();
+    alert('Commission applied to ' + member.name);
+  }
+
+
   function login() {
     const pw = document.getElementById('pwInput').value;
     if (pw === ADMIN_PASSWORD) {
