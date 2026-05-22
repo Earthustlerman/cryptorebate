@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CryptoRebate Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #00ff96;
+    --green-dim: rgba(0,255,150,0.08);
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #141414;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --text: #ffffff;
+    --text2: #888;
+    --text3: #444;
+    --red: #ff4d4d;
+    --amber: #ffb300;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* LOGIN */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .login-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .login-logo {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-logo span { color: var(--green); }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: var(--mono);
+    margin-bottom: 2rem;
+  }
+
+  .field { margin-bottom: 1.25rem; }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .field input {
+    width: 100%;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border 0.15s;
+  }
+
+  .field input:focus { border-color: var(--green); }
+
+  .login-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 800;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.15s;
+  }
+
+  .login-btn:hover { opacity: 0.88; }
+
+  .login-error {
+    font-size: 12px;
+    color: var(--red);
+    font-family: var(--mono);
+    margin-top: 10px;
+    text-align: center;
+    display: none;
+  }
+
+  /* ADMIN */
+  .admin-wrap { display: none; }
+
+  /* NAV */
+  .admin-nav {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .admin-logo { font-size: 16px; font-weight: 800; }
+  .admin-logo span { color: var(--green); }
+
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+
+  .nav-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  .logout-btn {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text3);
+    background: none;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* MAIN */
+  .admin-main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    padding: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .stat-val {
+    font-family: var(--mono);
+    font-size: 26px;
+    color: var(--green);
+  }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .add-btn {
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 800;
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.15s;
+  }
+
+  .add-btn:hover { opacity: 0.88; }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+
+  thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    background: var(--bg3);
+  }
+
+  td {
+    padding: 14px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #111;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .td-mono {
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .exchange-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  .cashback-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  /* PAID CHECKBOX */
+  .paid-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .paid-check {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--green);
+  }
+
+  .paid-label {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text3);
+  }
+
+  .paid-label.paid { color: var(--green); }
+  .paid-label.unpaid { color: var(--amber); }
+
+  /* ACTION BTNS */
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-right: 4px;
+  }
+
+  .action-btn:hover { border-color: var(--green); color: var(--green); }
+  .action-btn.del:hover { border-color: var(--red); color: var(--red); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-field { margin-bottom: 1.25rem; }
+
+  .modal-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .modal-field input, .modal-field select {
+    width: 100%;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border 0.15s;
+  }
+
+  .modal-field input:focus, .modal-field select:focus { border-color: var(--green); }
+  .modal-field select option { background: #111; }
+
+  .modal-btns {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+
+  .modal-save {
+    flex: 1;
+    padding: 12px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 800;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .modal-save:hover { opacity: 0.88; }
+
+  .modal-cancel {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .modal-cancel:hover { border-color: var(--red); color: var(--red); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  /* MONTH FILTER */
+  .month-filter {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .unpaid-row td { background: rgba(255,179,0,0.03); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">Crypto<span>Rebate</span>.org</div>
+    <div class="login-sub">// admin panel</div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()" />
+    </div>
+    <button class="login-btn" onclick="login()">Access Dashboard</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="adminWrap">
+
+  <!-- NAV -->
+  <nav class="admin-nav">
+    <div class="admin-logo">Crypto<span>Rebate</span>.org</div>
+    <div class="nav-right">
+      <span class="nav-tag">ADMIN PANEL</span>
+      <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
+  </nav>
+
+  <div class="admin-main">
+
+    <!-- STATS -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-label">Total Members</div>
+        <div class="stat-val" id="statMembers">0</div>
+        <div class="stat-sub">Active referrals</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Owed This Month</div>
+        <div class="stat-val" id="statOwed">$0.00</div>
+        <div class="stat-sub">Unpaid cashback</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Paid This Month</div>
+        <div class="stat-val" id="statPaid">$0.00</div>
+        <div class="stat-sub">Cashback sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Your Earnings</div>
+        <div class="stat-val" id="statEarnings">$0.00</div>
+        <div class="stat-sub">Your 25% cut</div>
+      </div>
+    </div>
+
+    <!-- MEMBERS TABLE -->
+    <div class="section-header">
+      <div class="section-title">Members</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <select class="month-filter" id="monthFilter" onchange="renderTable()">
+          <option value="2026-05">May 2026</option>
+          <option value="2026-06">June 2026</option>
+          <option value="2026-07">July 2026</option>
+          <option value="2026-08">August 2026</option>
+          <option value="2026-09">September 2026</option>
+          <option value="2026-10">October 2026</option>
+          <option value="2026-11">November 2026</option>
+          <option value="2026-12">December 2026</option>
+        </select>
+        <button class="add-btn" onclick="openModal()">+ Add Member</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Exchange</th>
+            <th>Wallet Address (USDT)</th>
+            <th>Monthly Volume</th>
+            <th>Cashback Owed</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="memberTable"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none">No members yet. Add your first member above.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Add New Member</div>
+    <div class="modal-field">
+      <label>Full Name</label>
+      <input type="text" id="mName" placeholder="John Smith" />
+    </div>
+    <div class="modal-field">
+      <label>Exchange</label>
+      <select id="mExchange">
+        <option value="Bybit">Bybit</option>
+        <option value="Binance">Binance</option>
+        <option value="OKX">OKX</option>
+        <option value="MEXC">MEXC</option>
+        <option value="Bitget">Bitget</option>
+        <option value="KuCoin">KuCoin</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>USDT Wallet Address</label>
+      <input type="text" id="mWallet" placeholder="TRC20 or ERC20 address" />
+    </div>
+    <div class="modal-field">
+      <label>Monthly Trading Volume (USD)</label>
+      <input type="number" id="mVolume" placeholder="10000" min="0" />
+    </div>
+    <div class="modal-field">
+      <label>Month</label>
+      <select id="mMonth">
+        <option value="2026-05">May 2026</option>
+        <option value="2026-06">June 2026</option>
+        <option value="2026-07">July 2026</option>
+        <option value="2026-08">August 2026</option>
+        <option value="2026-09">September 2026</option>
+        <option value="2026-10">October 2026</option>
+        <option value="2026-11">November 2026</option>
+        <option value="2026-12">December 2026</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveMember()">Save Member</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // CONFIG — CHANGE THIS PASSWORD
+  const ADMIN_PASSWORD = 'Thesegiganticshoes100!$@';
+
+  // Fee rates per exchange
+  const FEE_RATES = {
+    Bybit: 0.0010, Binance: 0.0010, OKX: 0.0008,
+    MEXC: 0.0010, Bitget: 0.0010, KuCoin: 0.0010
+  };
+  const COMMISSION_RATES = {
+    Bybit: 0.50, Binance: 0.50, OKX: 0.50,
+    MEXC: 0.50, Bitget: 0.50, KuCoin: 0.40
+  };
+
+  let members = JSON.parse(localStorage.getItem('cr_members') || '[]');
+  let editIndex = -1;
+
+  function save() {
+    localStorage.setItem('cr_members', JSON.stringify(members));
+  }
+
+  function calcCashback(vol, exchange) {
+    const fee = FEE_RATES[exchange] || 0.001;
+    const comm = COMMISSION_RATES[exchange] || 0.50;
+    return vol * fee * comm * 0.50;
+  }
+
+  // LOGIN
+  function login() {
+    const pw = document.getElementById('pwInput').value;
+    if (pw === ADMIN_PASSWORD) {
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('adminWrap').style.display = 'block';
+      renderTable();
+      updateStats();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('adminWrap').style.display = 'none';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('loginError').style.display = 'none';
+  }
+
+  // STATS
+  function updateStats() {
+    const month = document.getElementById('monthFilter').value;
+    const filtered = members.filter(m => m.month === month);
+    const totalMembers = members.length;
+    const totalOwed = filtered.filter(m => !m.paid).reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
+    const totalPaid = filtered.filter(m => m.paid).reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
+    const yourEarnings = filtered.reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
+
+    document.getElementById('statMembers').textContent = totalMembers;
+    document.getElementById('statOwed').textContent = '$' + totalOwed.toFixed(2);
+    document.getElementById('statPaid').textContent = '$' + totalPaid.toFixed(2);
+    document.getElementById('statEarnings').textContent = '$' + yourEarnings.toFixed(2);
+  }
+
+  // TABLE
+  function renderTable() {
+    const month = document.getElementById('monthFilter').value;
+    const filtered = members.filter(m => m.month === month);
+    const tbody = document.getElementById('memberTable');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      updateStats();
+      return;
+    }
+
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map((m, i) => {
+      const realIndex = members.indexOf(m);
+      const cashback = calcCashback(m.volume, m.exchange);
+      const shortWallet = m.wallet ? m.wallet.substring(0, 8) + '...' + m.wallet.slice(-6) : '—';
+      return `
+        <tr class="${m.paid ? '' : 'unpaid-row'}">
+          <td>${m.name}</td>
+          <td><span class="exchange-badge">${m.exchange}</span></td>
+          <td class="td-mono" title="${m.wallet}">${shortWallet}</td>
+          <td class="td-mono">$${Number(m.volume).toLocaleString()}</td>
+          <td><span class="cashback-val">$${cashback.toFixed(2)}</span></td>
+          <td>
+            <div class="paid-wrap">
+              <input type="checkbox" class="paid-check" ${m.paid ? 'checked' : ''} onchange="togglePaid(${realIndex})" />
+              <span class="paid-label ${m.paid ? 'paid' : 'unpaid'}">${m.paid ? 'PAID' : 'UNPAID'}</span>
+            </div>
+          </td>
+          <td>
+            <button class="action-btn" onclick="editMember(${realIndex})">Edit</button>
+            <button class="action-btn del" onclick="deleteMember(${realIndex})">Delete</button>
+          </td>
+        </tr>`;
+    }).join('');
+    updateStats();
+  }
+
+  // TOGGLE PAID
+  function togglePaid(index) {
+    members[index].paid = !members[index].paid;
+    save();
+    renderTable();
+  }
+
+  // MODAL
+  function openModal(index = -1) {
+    editIndex = index;
+    if (index >= 0) {
+      const m = members[index];
+      document.getElementById('modalTitle').textContent = 'Edit Member';
+      document.getElementById('mName').value = m.name;
+      document.getElementById('mExchange').value = m.exchange;
+      document.getElementById('mWallet').value = m.wallet;
+      document.getElementById('mVolume').value = m.volume;
+      document.getElementById('mMonth').value = m.month;
+    } else {
+      document.getElementById('modalTitle').textContent = 'Add New Member';
+      document.getElementById('mName').value = '';
+      document.getElementById('mExchange').value = 'Bybit';
+      document.getElementById('mWallet').value = '';
+      document.getElementById('mVolume').value = '';
+      document.getElementById('mMonth').value = document.getElementById('monthFilter').value;
+    }
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  function saveMember() {
+    const name = document.getElementById('mName').value.trim();
+    const exchange = document.getElementById('mExchange').value;
+    const wallet = document.getElementById('mWallet').value.trim();
+    const volume = parseFloat(document.getElementById('mVolume').value);
+    const month = document.getElementById('mMonth').value;
+
+    if (!name || !wallet || !volume) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    const member = { name, exchange, wallet, volume, month, paid: false };
+
+    if (editIndex >= 0) {
+      member.paid = members[editIndex].paid;
+      members[editIndex] = member;
+    } else {
+      members.push(member);
+    }
+
+    save();
+    closeModal();
+    renderTable();
+  }
+
+  function editMember(index) {
+    openModal(index);
+  }
+
+  function deleteMember(index) {
+    if (confirm('Delete this member? This cannot be undone.')) {
+      members.splice(index, 1);
+      save();
+      renderTable();
+    }
+  }
+</script>
+</body>
+</html>
