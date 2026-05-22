@@ -764,7 +764,7 @@
           <div class="vary-note">Based on standard fee rates. Your actual cashback may vary depending on your trading activity and fee tier.</div>
         </div>
 
-        <a href="https://partner.bybit.com/b/160166" id="joinBtn" class="join-btn" target="_blank" rel="noopener">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeuAlsIHawZemGoKoJv7d2_BzziMg3YePPAenkrK4ix3H9mBg/viewform?usp=publish-editor" id="joinBtn" class="join-btn" target="_blank" rel="noopener">
           Join the cashback club — it's free
         </a>
         <div class="zero-cost" id="zeroCost">No extra cost. Trade as normal. We share our commission back with you.</div>
@@ -845,7 +845,6 @@
     el.classList.add('active');
     fee = parseFloat(el.dataset.fee);
     commission = parseFloat(el.dataset.commission);
-    document.getElementById('joinBtn').href = el.dataset.link;
     calc();
   }
 
