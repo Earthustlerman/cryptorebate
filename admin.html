@@ -589,7 +589,8 @@ UID    Changes (USDT)    Percentage
             <th>Name</th>
             <th>Exchange</th>
             <th>Wallet Address (USDT)</th>
-            <th>Monthly Volume</th>
+            <th>UID</th>
+            <th>Commission (USDT)</th>
             <th>Cashback Owed</th>
             <th>Status</th>
             <th>Actions</th>
@@ -650,9 +651,14 @@ UID    Changes (USDT)    Percentage
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // CONFIG — CHANGE THIS PASSWORD
+  // CONFIG
   const ADMIN_PASSWORD = 'Thesegiganticshoes100!$@';
+  const SUPABASE_URL = 'https://gqeueasoyducvjccehne.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxZXVlYXNveWR1Y3ZqY2NlaG5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NjQxODYsImV4cCI6MjA5NTA0MDE4Nn0.ivnDLEaGeLQesInlG3fbHCl9AWBCDgfkRPR--uf611E';
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // Fee rates per exchange
   const FEE_RATES = {
@@ -664,17 +670,160 @@ UID    Changes (USDT)    Percentage
     MEXC: 0.50, Bitget: 0.50, KuCoin: 0.40
   };
 
-  let members = JSON.parse(localStorage.getItem('cr_members') || '[]');
-  let editIndex = -1;
+  let members = [];
+  let editId = null;
 
-  function save() {
-    localStorage.setItem('cr_members', JSON.stringify(members));
+  function calcCashback(commission, exchange) {
+    return (commission || 0) * 0.25;
   }
 
-  function calcCashback(vol, exchange) {
-    const fee = FEE_RATES[exchange] || 0.001;
-    const comm = COMMISSION_RATES[exchange] || 0.50;
-    return vol * fee * comm * 0.50;
+  // LOGIN
+  function login() {
+    const pw = document.getElementById('pwInput').value;
+    if (pw === ADMIN_PASSWORD) {
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('adminWrap').style.display = 'block';
+      loadMembers();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('adminWrap').style.display = 'none';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('loginError').style.display = 'none';
+  }
+
+  // LOAD MEMBERS FROM SUPABASE
+  async function loadMembers() {
+    const { data, error } = await sb.from('members').select('*').order('id', { ascending: false });
+    if (error) { alert('Error loading members: ' + error.message); return; }
+    members = data || [];
+    renderTable();
+    updateStats();
+  }
+
+  // STATS
+  function updateStats() {
+    const month = document.getElementById('monthFilter').value;
+    const filtered = members.filter(m => m.month === month);
+    const totalOwed = filtered.filter(m => !m.paid).reduce((s, m) => s + calcCashback(m.commission, m.exchange), 0);
+    const totalPaid = filtered.filter(m => m.paid).reduce((s, m) => s + calcCashback(m.commission, m.exchange), 0);
+    const yourEarnings = filtered.reduce((s, m) => s + calcCashback(m.commission, m.exchange), 0);
+
+    document.getElementById('statMembers').textContent = members.length;
+    document.getElementById('statOwed').textContent = '$' + totalOwed.toFixed(2);
+    document.getElementById('statPaid').textContent = '$' + totalPaid.toFixed(2);
+    document.getElementById('statEarnings').textContent = '$' + yourEarnings.toFixed(2);
+  }
+
+  // TABLE
+  function renderTable() {
+    const month = document.getElementById('monthFilter').value;
+    const filtered = members.filter(m => m.month === month);
+    const tbody = document.getElementById('memberTable');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      updateStats();
+      return;
+    }
+
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map(m => {
+      const cashback = calcCashback(m.commission, m.exchange);
+      const shortWallet = m.wallet ? m.wallet.substring(0, 8) + '...' + m.wallet.slice(-6) : '—';
+      return `
+        <tr class="${m.paid ? '' : 'unpaid-row'}">
+          <td>${m.name}</td>
+          <td><span class="exchange-badge">${m.exchange}</span></td>
+          <td class="td-mono" title="${m.wallet}">${shortWallet}</td>
+          <td class="td-mono">${m.uid || '—'}</td>
+          <td class="td-mono">$${(m.commission || 0).toFixed(4)}</td>
+          <td><span class="cashback-val">$${cashback.toFixed(4)}</span></td>
+          <td>
+            <div class="paid-wrap">
+              <input type="checkbox" class="paid-check" ${m.paid ? 'checked' : ''} onchange="togglePaid('${m.id}', ${m.paid})" />
+              <span class="paid-label ${m.paid ? 'paid' : 'unpaid'}">${m.paid ? 'PAID' : 'UNPAID'}</span>
+            </div>
+          </td>
+          <td>
+            <button class="action-btn" onclick="editMember('${m.id}')">Edit</button>
+            <button class="action-btn del" onclick="deleteMember('${m.id}')">Delete</button>
+          </td>
+        </tr>`;
+    }).join('');
+    updateStats();
+  }
+
+  // TOGGLE PAID
+  async function togglePaid(id, current) {
+    const { error } = await sb.from('members').update({ paid: !current }).eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    await loadMembers();
+  }
+
+  // MODAL
+  function openModal(id = null) {
+    editId = id;
+    if (id) {
+      const m = members.find(m => m.id === id);
+      document.getElementById('modalTitle').textContent = 'Edit Member';
+      document.getElementById('mName').value = m.name || '';
+      document.getElementById('mExchange').value = m.exchange || 'Bybit';
+      document.getElementById('mWallet').value = m.wallet || '';
+      document.getElementById('mVolume').value = m.commission || '';
+      document.getElementById('mMonth').value = m.month || document.getElementById('monthFilter').value;
+    } else {
+      document.getElementById('modalTitle').textContent = 'Add New Member';
+      document.getElementById('mName').value = '';
+      document.getElementById('mExchange').value = 'Bybit';
+      document.getElementById('mWallet').value = '';
+      document.getElementById('mVolume').value = '';
+      document.getElementById('mMonth').value = document.getElementById('monthFilter').value;
+    }
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  async function saveMember() {
+    const name = document.getElementById('mName').value.trim();
+    const exchange = document.getElementById('mExchange').value;
+    const wallet = document.getElementById('mWallet').value.trim();
+    const commission = parseFloat(document.getElementById('mVolume').value) || 0;
+    const month = document.getElementById('mMonth').value;
+
+    if (!name) { alert('Please enter a name.'); return; }
+
+    const data = { name, exchange, wallet, commission, month, paid: false };
+
+    if (editId) {
+      const { error } = await sb.from('members').update(data).eq('id', editId);
+      if (error) { alert('Error: ' + error.message); return; }
+    } else {
+      const { error } = await sb.from('members').insert([data]);
+      if (error) { alert('Error: ' + error.message); return; }
+    }
+
+    closeModal();
+    await loadMembers();
+  }
+
+  function editMember(id) { openModal(id); }
+
+  async function deleteMember(id) {
+    if (confirm('Delete this member? This cannot be undone.')) {
+      const { error } = await sb.from('members').delete().eq('id', id);
+      if (error) { alert('Error: ' + error.message); return; }
+      await loadMembers();
+    }
   }
 
   // COMMISSION IMPORT
@@ -687,23 +836,18 @@ UID    Changes (USDT)    Percentage
     const commissionMap = {};
 
     for (const line of lines) {
-      // Split by tab or multiple spaces
       const parts = line.split(/\t|  +/).map(p => p.trim()).filter(p => p.length > 0);
       if (parts.length < 2) continue;
 
-      // Try to find UID (long number) and commission (decimal number)
       let uid = null;
       let commission = null;
 
       for (const part of parts) {
         const num = parseFloat(part.replace(/[^0-9.]/g, ''));
         if (!isNaN(num)) {
-          // If it looks like a UID (integer, 6+ digits)
           if (/^\d{6,}$/.test(part.trim()) && uid === null) {
             uid = part.trim();
-          }
-          // If it looks like a commission amount (decimal or small number)
-          else if (commission === null && num < 100000) {
+          } else if (commission === null && num < 100000) {
             commission = num;
           }
         }
@@ -720,7 +864,6 @@ UID    Changes (USDT)    Percentage
       return;
     }
 
-    // Match UIDs to members
     const tbody = document.getElementById('importTable');
     tbody.innerHTML = uids.map(uid => {
       const total = commissionMap[uid];
@@ -752,174 +895,27 @@ UID    Changes (USDT)    Percentage
     reader.readAsText(file);
   }
 
-  function linkUID(uid) {
+  async function linkUID(uid) {
     const name = prompt('Enter the member name to link this UID to:');
     if (!name) return;
-    const index = members.findIndex(m => m.name.toLowerCase() === name.toLowerCase());
-    if (index === -1) { alert('Member not found. Check the name and try again.'); return; }
-    members[index].uid = uid;
-    save();
+    const member = members.find(m => m.name.toLowerCase() === name.toLowerCase());
+    if (!member) { alert('Member not found. Check the name and try again.'); return; }
+    const { error } = await sb.from('members').update({ uid }).eq('id', member.id);
+    if (error) { alert('Error: ' + error.message); return; }
+    await loadMembers();
     importCommissions();
-    alert('UID linked to ' + members[index].name);
+    alert('UID linked to ' + member.name);
   }
 
-  function applyCommission(uid, total, exchange) {
+  async function applyCommission(uid, total, exchange) {
     const month = document.getElementById('monthFilter').value;
     const member = members.find(m => m.uid === uid);
     if (!member) return;
-    member.commission = (member.commission || 0) + total;
-    member.month = month;
-    member.exchange = exchange;
-    save();
-    renderTable();
+    const newCommission = (member.commission || 0) + total;
+    const { error } = await sb.from('members').update({ commission: newCommission, month, exchange }).eq('id', member.id);
+    if (error) { alert('Error: ' + error.message); return; }
+    await loadMembers();
     alert('Commission applied to ' + member.name);
-  }
-
-
-  function login() {
-    const pw = document.getElementById('pwInput').value;
-    if (pw === ADMIN_PASSWORD) {
-      document.getElementById('loginWrap').style.display = 'none';
-      document.getElementById('adminWrap').style.display = 'block';
-      renderTable();
-      updateStats();
-    } else {
-      document.getElementById('loginError').style.display = 'block';
-    }
-  }
-
-  function logout() {
-    document.getElementById('loginWrap').style.display = 'flex';
-    document.getElementById('adminWrap').style.display = 'none';
-    document.getElementById('pwInput').value = '';
-    document.getElementById('loginError').style.display = 'none';
-  }
-
-  // STATS
-  function updateStats() {
-    const month = document.getElementById('monthFilter').value;
-    const filtered = members.filter(m => m.month === month);
-    const totalMembers = members.length;
-    const totalOwed = filtered.filter(m => !m.paid).reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
-    const totalPaid = filtered.filter(m => m.paid).reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
-    const yourEarnings = filtered.reduce((s, m) => s + calcCashback(m.volume, m.exchange), 0);
-
-    document.getElementById('statMembers').textContent = totalMembers;
-    document.getElementById('statOwed').textContent = '$' + totalOwed.toFixed(2);
-    document.getElementById('statPaid').textContent = '$' + totalPaid.toFixed(2);
-    document.getElementById('statEarnings').textContent = '$' + yourEarnings.toFixed(2);
-  }
-
-  // TABLE
-  function renderTable() {
-    const month = document.getElementById('monthFilter').value;
-    const filtered = members.filter(m => m.month === month);
-    const tbody = document.getElementById('memberTable');
-    const empty = document.getElementById('emptyState');
-
-    if (filtered.length === 0) {
-      tbody.innerHTML = '';
-      empty.style.display = 'block';
-      updateStats();
-      return;
-    }
-
-    empty.style.display = 'none';
-    tbody.innerHTML = filtered.map((m, i) => {
-      const realIndex = members.indexOf(m);
-      const cashback = calcCashback(m.volume, m.exchange);
-      const shortWallet = m.wallet ? m.wallet.substring(0, 8) + '...' + m.wallet.slice(-6) : '—';
-      return `
-        <tr class="${m.paid ? '' : 'unpaid-row'}">
-          <td>${m.name}</td>
-          <td><span class="exchange-badge">${m.exchange}</span></td>
-          <td class="td-mono" title="${m.wallet}">${shortWallet}</td>
-          <td class="td-mono">$${Number(m.volume).toLocaleString()}</td>
-          <td><span class="cashback-val">$${cashback.toFixed(2)}</span></td>
-          <td>
-            <div class="paid-wrap">
-              <input type="checkbox" class="paid-check" ${m.paid ? 'checked' : ''} onchange="togglePaid(${realIndex})" />
-              <span class="paid-label ${m.paid ? 'paid' : 'unpaid'}">${m.paid ? 'PAID' : 'UNPAID'}</span>
-            </div>
-          </td>
-          <td>
-            <button class="action-btn" onclick="editMember(${realIndex})">Edit</button>
-            <button class="action-btn del" onclick="deleteMember(${realIndex})">Delete</button>
-          </td>
-        </tr>`;
-    }).join('');
-    updateStats();
-  }
-
-  // TOGGLE PAID
-  function togglePaid(index) {
-    members[index].paid = !members[index].paid;
-    save();
-    renderTable();
-  }
-
-  // MODAL
-  function openModal(index = -1) {
-    editIndex = index;
-    if (index >= 0) {
-      const m = members[index];
-      document.getElementById('modalTitle').textContent = 'Edit Member';
-      document.getElementById('mName').value = m.name;
-      document.getElementById('mExchange').value = m.exchange;
-      document.getElementById('mWallet').value = m.wallet;
-      document.getElementById('mVolume').value = m.volume;
-      document.getElementById('mMonth').value = m.month;
-    } else {
-      document.getElementById('modalTitle').textContent = 'Add New Member';
-      document.getElementById('mName').value = '';
-      document.getElementById('mExchange').value = 'Bybit';
-      document.getElementById('mWallet').value = '';
-      document.getElementById('mVolume').value = '';
-      document.getElementById('mMonth').value = document.getElementById('monthFilter').value;
-    }
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-
-  function saveMember() {
-    const name = document.getElementById('mName').value.trim();
-    const exchange = document.getElementById('mExchange').value;
-    const wallet = document.getElementById('mWallet').value.trim();
-    const volume = parseFloat(document.getElementById('mVolume').value);
-    const month = document.getElementById('mMonth').value;
-
-    if (!name || !wallet || !volume) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
-    const member = { name, exchange, wallet, volume, month, paid: false };
-
-    if (editIndex >= 0) {
-      member.paid = members[editIndex].paid;
-      members[editIndex] = member;
-    } else {
-      members.push(member);
-    }
-
-    save();
-    closeModal();
-    renderTable();
-  }
-
-  function editMember(index) {
-    openModal(index);
-  }
-
-  function deleteMember(index) {
-    if (confirm('Delete this member? This cannot be undone.')) {
-      members.splice(index, 1);
-      save();
-      renderTable();
-    }
   }
 </script>
 </body>
