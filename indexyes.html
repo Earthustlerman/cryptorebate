@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CryptoRebate.io — Get Your Trading Fees Back | South Africa</title>
+<meta name="description" content="South African crypto traders: stop giving away money in trading fees. Join CryptoRebate and get up to 25% of your fees back every single month. Free to join." />
+<meta name="keywords" content="crypto cashback South Africa, trading fee rebate SA, crypto affiliate cashback, Bybit rebate South Africa, Binance cashback ZA" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #00ff96;
+    --green-dim: rgba(0,255,150,0.08);
+    --green-mid: rgba(0,255,150,0.15);
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #141414;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --text: #ffffff;
+    --text2: #888;
+    --text3: #444;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .logo span { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: opacity 0.15s;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 1.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 20%; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,255,150,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    max-width: 820px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text2);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 800;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--border2);
+    transition: all 0.15s;
+  }
+
+  .btn-secondary:hover { border-color: #444; color: var(--text); }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .hero-stat { text-align: center; }
+
+  .hero-stat-num {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--green);
+    display: block;
+  }
+
+  .hero-stat-lbl {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* HOW IT WORKS */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--text2);
+    max-width: 560px;
+    margin-bottom: 3rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .step {
+    background: var(--bg2);
+    padding: 2rem;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .step h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+
+  .step p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* EXCHANGES */
+  .exchange-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  .ex-card {
+    background: var(--bg2);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: background 0.15s;
+  }
+
+  .ex-card:hover { background: var(--bg3); }
+
+  .ex-card-name {
+    font-size: 15px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .ex-card-rate {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    display: block;
+  }
+
+  .ex-card-rebate {
+    font-size: 11px;
+    color: var(--text3);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* CALCULATOR SECTION */
+  .calc-section {
+    padding: 5rem 1.5rem;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .calc-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .calc-box {
+    background: #0a0a0a;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 2.5rem;
+  }
+
+  .calc-head {
+    padding: 1.75rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .calc-head h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .calc-head p { font-size: 13px; color: var(--text2); }
+
+  .calc-body { padding: 1.5rem 2rem; }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .ex-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .ex-btn {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 10px 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: var(--sans);
+  }
+
+  .ex-btn:hover { border-color: #333; }
+  .ex-btn.active { border-color: var(--green); background: var(--green-dim); }
+  .ex-btn-name { font-size: 13px; font-weight: 700; color: #fff; display: block; }
+  .ex-btn-rate { font-family: var(--mono); font-size: 10px; color: var(--green); display: block; margin-top: 2px; }
+
+  .vol-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
+  .vol-prefix { font-family: var(--mono); font-size: 20px; color: var(--text3); flex-shrink: 0; }
+
+  .vol-input {
+    flex: 1;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 13px 14px;
+    font-family: var(--mono);
+    font-size: 20px;
+    color: #fff;
+    outline: none;
+    transition: border 0.15s;
+    width: 100%;
+  }
+
+  .vol-input:focus { border-color: var(--green); }
+  .vol-input::placeholder { color: #2a2a2a; }
+
+  .results {
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .results.hidden { opacity: 0; transform: translateY(6px); pointer-events: none; }
+  .results.visible { opacity: 1; transform: translateY(0); }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    border-bottom: 1px solid #161616;
+  }
+
+  .result-row:last-child { border-bottom: none; }
+  .result-lbl { font-size: 12px; color: var(--text3); }
+  .result-val { font-family: var(--mono); font-size: 14px; color: #fff; }
+  .result-val.muted { color: #333; }
+  .result-val.green { color: var(--green); }
+
+  .result-row.big {
+    background: var(--green-dim);
+    padding: 16px;
+  }
+
+  .result-row.big .result-lbl { color: var(--green); font-size: 13px; font-weight: 700; }
+  .result-row.big .result-val { font-size: 22px; color: var(--green); }
+
+  .yearly { font-family: var(--mono); font-size: 10px; color: #2a2a2a; text-align: right; padding: 8px 16px 12px; }
+
+  .vary-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #222;
+    text-align: center;
+    padding: 10px 16px 14px;
+    border-top: 1px solid #161616;
+    line-height: 1.7;
+  }
+
+  .join-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 15px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .join-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .join-btn.hidden { display: none; }
+
+  .zero-cost {
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--mono);
+  }
+
+  /* FAQ */
+  .faq-list { margin-top: 2rem; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 0;
+  }
+
+  .faq-q {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-logo span { color: var(--green); }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+    line-height: 1.8;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 5rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  .contact-box p {
+    font-size: 15px;
+    color: var(--text2);
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .contact-email {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,255,150,0.3);
+    padding-bottom: 4px;
+    transition: border-color 0.15s;
+  }
+
+  .contact-email:hover { border-color: var(--green); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.25rem; }
+    nav .logo { font-size: 15px; }
+    nav .nav-cta { font-size: 12px; padding: 7px 14px; }
+
+    .hero { padding: 7rem 1.25rem 3rem; }
+    .hero h1 { font-size: 1.9rem; letter-spacing: -0.02em; }
+    .hero-sub { font-size: 15px; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+    .hero-stat-row { gap: 1.25rem; }
+    .hero-stat-num { font-size: 22px; }
+
+    section { padding: 3.5rem 1.25rem; }
+    .section-title { font-size: 1.7rem; }
+
+    .steps { grid-template-columns: 1fr; }
+    .exchange-logos { grid-template-columns: repeat(2, 1fr); }
+
+    .calc-section { padding: 3.5rem 1.25rem; }
+    .calc-head { padding: 1.25rem 1.25rem 1rem; }
+    .calc-body { padding: 1.25rem; }
+    .ex-grid { grid-template-columns: repeat(2, 1fr); }
+    .vol-input { font-size: 16px; padding: 11px 12px; }
+    .vol-prefix { font-size: 16px; }
+    .result-row.big .result-val { font-size: 18px; }
+
+    .contact-section { padding: 3.5rem 1.25rem; }
+    .contact-box { padding: 2rem 1.25rem; }
+    .contact-email { font-size: 15px; }
+
+    footer { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Crypto<span>Rebate</span>.io</a>
+  <a href="#calculator" class="nav-cta">Calculate My Rebate</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🇿🇦 Built for South African Crypto Traders</div>
+  <h1>Stop giving your trading fees away.<br><em>Get them back.</em></h1>
+  <p class="hero-sub">Every month you trade crypto, you pay fees. We share our affiliate commission back with you — up to 25% of your fees, returned to your wallet monthly. Completely free to join.</p>
+  <div class="hero-btns">
+    <a href="#calculator" class="btn-primary">Calculate My Rebate</a>
+    <a href="#how" class="btn-secondary">How it works</a>
+  </div>
+  <div class="hero-stat-row">
+    <div class="hero-stat">
+      <span class="hero-stat-num">25%</span>
+      <span class="hero-stat-lbl">Of your fees back monthly</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">R0</span>
+      <span class="hero-stat-lbl">Cost to join</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">6</span>
+      <span class="hero-stat-lbl">Top exchanges supported</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">∞</span>
+      <span class="hero-stat-lbl">No cap on earnings</span>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-tag">How it works</div>
+  <h2 class="section-title">Simple. Honest. Free.</h2>
+  <p class="section-sub">Three steps and you're earning money back on every trade you already make.</p>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01 —</span>
+      <h3>Sign up through our link</h3>
+      <p>Create your account on any supported exchange using our referral link. Takes 5 minutes. No extra cost to you — ever.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02 —</span>
+      <h3>Trade like you normally do</h3>
+      <p>Nothing changes about how you trade. Use the exchange exactly as you would. We track your activity automatically in the background.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03 —</span>
+      <h3>Receive your cashback monthly</h3>
+      <p>Each month we calculate your rebate based on your trading volume and send your share directly. Real money, back in your wallet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXCHANGES -->
+<section>
+  <div class="section-tag">Supported exchanges</div>
+  <h2 class="section-title">Trade anywhere.<br>Earn everywhere.</h2>
+  <p class="section-sub">We support the biggest crypto exchanges in the world. All with competitive fee rebates.</p>
+  <div class="exchange-logos">
+    <div class="ex-card">
+      <span class="ex-card-name">Bybit</span>
+      <span class="ex-card-rate">Up to 25% back</span>
+      <span class="ex-card-rebate">0.10% trading fee</span>
+    </div>
+    <div class="ex-card">
+      <span class="ex-card-name">Binance</span>
+      <span class="ex-card-rate">Up to 25% back</span>
+      <span class="ex-card-rebate">0.10% trading fee</span>
+    </div>
+    <div class="ex-card">
+      <span class="ex-card-name">OKX</span>
+      <span class="ex-card-rate">Up to 20% back</span>
+      <span class="ex-card-rebate">0.08% trading fee</span>
+    </div>
+    <div class="ex-card">
+      <span class="ex-card-name">MEXC</span>
+      <span class="ex-card-rate">Up to 25% back</span>
+      <span class="ex-card-rebate">0.10% trading fee</span>
+    </div>
+    <div class="ex-card">
+      <span class="ex-card-name">Bitget</span>
+      <span class="ex-card-rate">Up to 25% back</span>
+      <span class="ex-card-rebate">0.10% trading fee</span>
+    </div>
+    <div class="ex-card">
+      <span class="ex-card-name">KuCoin</span>
+      <span class="ex-card-rate">Up to 20% back</span>
+      <span class="ex-card-rebate">0.10% trading fee</span>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<div class="calc-section" id="calculator">
+  <div class="calc-inner">
+    <div class="section-tag">Free calculator</div>
+    <h2 class="section-title">How much could<br>you be getting back?</h2>
+    <p class="section-sub">Enter your monthly trading volume and see exactly what you're leaving on the table.</p>
+
+    <div class="calc-box">
+      <div class="calc-head">
+        <h3>Cashback Calculator</h3>
+        <p>Based on standard exchange fee rates</p>
+      </div>
+      <div class="calc-body">
+        <span class="field-label">Your exchange</span>
+        <div class="ex-grid">
+          <div class="ex-btn active" data-fee="0.0010" data-commission="0.50" data-link="https://partner.bybit.com/b/160166" onclick="selectEx(this)">
+            <span class="ex-btn-name">Bybit</span>
+            <span class="ex-btn-rate">0.10% fee</span>
+          </div>
+          <div class="ex-btn" data-fee="0.0010" data-commission="0.50" data-link="https://www.binance.com/register?ref=CREBATE" onclick="selectEx(this)">
+            <span class="ex-btn-name">Binance</span>
+            <span class="ex-btn-rate">0.10% fee</span>
+          </div>
+          <div class="ex-btn" data-fee="0.0008" data-commission="0.50" data-link="https://okx.com/join/89443771" onclick="selectEx(this)">
+            <span class="ex-btn-name">OKX</span>
+            <span class="ex-btn-rate">0.08% fee</span>
+          </div>
+          <div class="ex-btn" data-fee="0.0010" data-commission="0.50" data-link="https://promote.mexc.com/r/f3xfYg4b4q" onclick="selectEx(this)">
+            <span class="ex-btn-name">MEXC</span>
+            <span class="ex-btn-rate">0.10% fee</span>
+          </div>
+          <div class="ex-btn" data-fee="0.0010" data-commission="0.50" data-link="https://share.bitget.com/u/5JPPTPS7" onclick="selectEx(this)">
+            <span class="ex-btn-name">Bitget</span>
+            <span class="ex-btn-rate">0.10% fee</span>
+          </div>
+          <div class="ex-btn" data-fee="0.0010" data-commission="0.40" data-link="https://www.kucoin.com/r/rf/CXEPY95L" onclick="selectEx(this)">
+            <span class="ex-btn-name">KuCoin</span>
+            <span class="ex-btn-rate">0.10% fee</span>
+          </div>
+        </div>
+
+        <span class="field-label">Monthly trading volume</span>
+        <div class="vol-row">
+          <span class="vol-prefix">$</span>
+          <input class="vol-input" type="number" id="vol" placeholder="10000" min="0" oninput="calc()" />
+        </div>
+
+        <div class="results hidden" id="results">
+          <div class="result-row">
+            <span class="result-lbl">Fees you pay monthly</span>
+            <span class="result-val muted" id="rFees">—</span>
+          </div>
+          <div class="result-row">
+            <span class="result-lbl">Exchange pays us</span>
+            <span class="result-val" id="rComm">—</span>
+          </div>
+          <div class="result-row big">
+            <span class="result-lbl">Your cashback per month</span>
+            <span class="result-val green" id="rCash">—</span>
+          </div>
+          <div class="yearly" id="rYear"></div>
+          <div class="vary-note">Based on standard fee rates. Your actual cashback may vary depending on your trading activity and fee tier.</div>
+        </div>
+
+        <a href="https://partner.bybit.com/b/160166" id="joinBtn" class="join-btn" target="_blank" rel="noopener">
+          Join the cashback club — it's free
+        </a>
+        <div class="zero-cost" id="zeroCost">No extra cost. Trade as normal. We share our commission back with you.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section>
+  <div class="section-tag">Questions</div>
+  <h2 class="section-title">Straight answers.</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Is this actually free?</div>
+      <div class="faq-a">Yes. You pay nothing. The exchange pays us a commission for sending them traders. We split that commission with you. There is no catch and no hidden cost.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I have to change how I trade?</div>
+      <div class="faq-a">Not at all. You trade exactly as you do now. The only difference is you signed up through our link, which means we earn a commission that we share back with you monthly.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I receive my cashback?</div>
+      <div class="faq-a">Each month we calculate your rebate based on your trading volume and send your share in crypto directly. You'll receive payment details when you join.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">I already have an account on Bybit or Binance. Can I still join?</div>
+      <div class="faq-a">Unfortunately affiliate tracking only works for new accounts created through our referral link. If you already have an account, you'd need to open a new one to participate.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is this available to South Africans?</div>
+      <div class="faq-a">Yes — this is built specifically with South African traders in mind. All supported exchanges accept South African users and the cashback is paid in crypto which you can convert to ZAR.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHATSAPP SHARE -->
+<div style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 1.5rem; text-align: center;">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <div class="section-tag">Spread the word</div>
+    <h2 class="section-title" style="margin-bottom: 1rem;">Know someone who could benefit?</h2>
+    <p style="font-size: 15px; color: var(--text2); margin-bottom: 2rem; line-height: 1.7;">Share this with anyone — they don't need to be a trader. If they sign up and start earning, that's more money circulating in your circle for free.</p>
+    <a href="https://wa.me/?text=I%20am%20receiving%20free%20monthly%20payments%20and%20it%20costs%20nothing%20to%20join%20%E2%80%94%20cryptorebate.org" target="_blank" rel="noopener"
+      style="display: inline-flex; align-items: center; gap: 12px; background: #25D366; color: #000; font-family: var(--sans); font-size: 16px; font-weight: 800; padding: 16px 32px; border-radius: 10px; text-decoration: none; letter-spacing: 0.02em; transition: opacity 0.15s;"
+      onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#000"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Share on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section">
+  <div class="section-tag">Get in touch</div>
+  <h2 class="section-title">Have a question?</h2>
+  <div class="contact-box">
+    <p>We're real people and happy to answer anything before you join. Whether you want to understand how the cashback works, which exchange is best for you, or just want to verify we're legitimate — drop us an email.</p>
+    <a href="mailto:contact@cryptorebate.org" class="contact-email">contact@cryptorebate.org</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Crypto<span>Rebate</span>.io</div>
+  <div class="footer-text">
+    Built for South African crypto traders who are tired of giving their fees away.<br>
+    Affiliate commissions disclosed: we earn a commission from exchanges when you sign up through our links. Your cashback comes from that commission.<br><br>
+    © 2026 CryptoRebate.io — This is not financial advice.
+  </div>
+</footer>
+
+<script>
+  let fee = 0.0010;
+  let commission = 0.50;
+
+  function selectEx(el) {
+    document.querySelectorAll('.ex-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    fee = parseFloat(el.dataset.fee);
+    commission = parseFloat(el.dataset.commission);
+    document.getElementById('joinBtn').href = el.dataset.link;
+    calc();
+  }
+
+  function calc() {
+    const vol = parseFloat(document.getElementById('vol').value);
+    const results = document.getElementById('results');
+    const joinBtn = document.getElementById('joinBtn');
+    const zeroCost = document.getElementById('zeroCost');
+
+    if (!vol || vol <= 0) {
+      results.className = 'results hidden';
+      return;
+    }
+
+    const fees = vol * fee;
+    const comm = fees * commission;
+    const cash = comm * 0.50;
+    const yearly = cash * 12;
+
+    document.getElementById('rFees').textContent = '$' + fees.toFixed(2);
+    document.getElementById('rComm').textContent = '$' + comm.toFixed(2);
+    document.getElementById('rCash').textContent = '$' + cash.toFixed(2) + '/mo';
+    document.getElementById('rYear').textContent = "That's $" + Math.round(yearly).toLocaleString() + ' back in your pocket per year';
+
+    results.className = 'results visible';
+  }
+</script>
+</body>
+</html>
