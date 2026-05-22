@@ -613,7 +613,7 @@
 <div class="hero">
   <div class="hero-tag">🇿🇦 Built for South African Crypto Traders</div>
   <h1>Stop giving your trading fees away.<br><em>Get them back.</em></h1>
-  <p class="hero-sub">Every month you trade crypto, you pay fees. We share our affiliate commission back with you — up to 25% of your fees, returned to your wallet monthly. Completely free to join.</p>
+  <p class="hero-sub">Every month you trade crypto, you pay fees. We share our affiliate commission back with you — up to 25% of your fees, returned to your wallet weekly. Completely free to join.</p>
   <div class="hero-btns">
     <a href="#calculator" class="btn-primary">Calculate My Rebate</a>
     <a href="#how" class="btn-secondary">How it works</a>
@@ -621,7 +621,7 @@
   <div class="hero-stat-row">
     <div class="hero-stat">
       <span class="hero-stat-num">25%</span>
-      <span class="hero-stat-lbl">Of your fees back monthly</span>
+      <span class="hero-stat-lbl">Of your fees back weekly</span>
     </div>
     <div class="hero-stat">
       <span class="hero-stat-num">R0</span>
@@ -656,8 +656,8 @@
     </div>
     <div class="step">
       <span class="step-num">03 —</span>
-      <h3>Receive your cashback monthly</h3>
-      <p>Each month we calculate your rebate based on your trading volume and send your share directly. Real money, back in your wallet.</p>
+      <h3>Receive your cashback weekly</h3>
+      <p>Each week we calculate your rebate based on your trading volume and send your share directly. Real money, back in your wallet.</p>
     </div>
   </div>
 </section>
@@ -758,7 +758,7 @@
             <span class="result-val" id="rComm">—</span>
           </div>
           <div class="result-row big">
-            <span class="result-lbl">Your cashback per month</span>
+            <span class="result-lbl">Your cashback per week</span>
             <span class="result-val green" id="rCash">—</span>
           </div>
           <div class="yearly" id="rYear"></div>
@@ -785,11 +785,11 @@
     </div>
     <div class="faq-item">
       <div class="faq-q">Do I have to change how I trade?</div>
-      <div class="faq-a">Not at all. You trade exactly as you do now. The only difference is you signed up through our link, which means we earn a commission that we share back with you monthly.</div>
+      <div class="faq-a">Not at all. You trade exactly as you do now. The only difference is you signed up through our link, which means we earn a commission that we share back with you weekly.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">How do I receive my cashback?</div>
-      <div class="faq-a">Each month we calculate your rebate based on your trading volume and send your share in crypto directly. You'll receive payment details when you join.</div>
+      <div class="faq-a">Each week we calculate your rebate based on your trading volume and send your share in crypto directly. You'll receive payment details when you join.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">I already have an account on Bybit or Binance. Can I still join?</div>
@@ -863,7 +863,7 @@
     const fees = vol * fee;
     const comm = fees * commission;
     const cash = comm * 0.50;
-    const yearly = cash * 12;
+    const yearly = cash * 52;
 
     document.getElementById('rFees').textContent = '$' + fees.toFixed(2);
     document.getElementById('rComm').textContent = '$' + comm.toFixed(2);
