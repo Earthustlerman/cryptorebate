@@ -569,14 +569,58 @@ UID    Changes (USDT)    Percentage
       <div class="section-title">Members</div>
       <div style="display:flex;gap:10px;align-items:center;">
         <select class="month-filter" id="monthFilter" onchange="renderTable()">
-          <option value="2026-05">May 2026</option>
-          <option value="2026-06">June 2026</option>
-          <option value="2026-07">July 2026</option>
-          <option value="2026-08">August 2026</option>
-          <option value="2026-09">September 2026</option>
-          <option value="2026-10">October 2026</option>
-          <option value="2026-11">November 2026</option>
-          <option value="2026-12">December 2026</option>
+          <option value="2026-W01">Week 1 (05 Jan - 11 Jan)</option>
+          <option value="2026-W02">Week 2 (12 Jan - 18 Jan)</option>
+          <option value="2026-W03">Week 3 (19 Jan - 25 Jan)</option>
+          <option value="2026-W04">Week 4 (26 Jan - 01 Feb)</option>
+          <option value="2026-W05">Week 5 (02 Feb - 08 Feb)</option>
+          <option value="2026-W06">Week 6 (09 Feb - 15 Feb)</option>
+          <option value="2026-W07">Week 7 (16 Feb - 22 Feb)</option>
+          <option value="2026-W08">Week 8 (23 Feb - 01 Mar)</option>
+          <option value="2026-W09">Week 9 (02 Mar - 08 Mar)</option>
+          <option value="2026-W10">Week 10 (09 Mar - 15 Mar)</option>
+          <option value="2026-W11">Week 11 (16 Mar - 22 Mar)</option>
+          <option value="2026-W12">Week 12 (23 Mar - 29 Mar)</option>
+          <option value="2026-W13">Week 13 (30 Mar - 05 Apr)</option>
+          <option value="2026-W14">Week 14 (06 Apr - 12 Apr)</option>
+          <option value="2026-W15">Week 15 (13 Apr - 19 Apr)</option>
+          <option value="2026-W16">Week 16 (20 Apr - 26 Apr)</option>
+          <option value="2026-W17">Week 17 (27 Apr - 03 May)</option>
+          <option value="2026-W18">Week 18 (04 May - 10 May)</option>
+          <option value="2026-W19">Week 19 (11 May - 17 May)</option>
+          <option value="2026-W20">Week 20 (18 May - 24 May)</option>
+          <option value="2026-W21">Week 21 (25 May - 31 May)</option>
+          <option value="2026-W22">Week 22 (01 Jun - 07 Jun)</option>
+          <option value="2026-W23">Week 23 (08 Jun - 14 Jun)</option>
+          <option value="2026-W24">Week 24 (15 Jun - 21 Jun)</option>
+          <option value="2026-W25">Week 25 (22 Jun - 28 Jun)</option>
+          <option value="2026-W26">Week 26 (29 Jun - 05 Jul)</option>
+          <option value="2026-W27">Week 27 (06 Jul - 12 Jul)</option>
+          <option value="2026-W28">Week 28 (13 Jul - 19 Jul)</option>
+          <option value="2026-W29">Week 29 (20 Jul - 26 Jul)</option>
+          <option value="2026-W30">Week 30 (27 Jul - 02 Aug)</option>
+          <option value="2026-W31">Week 31 (03 Aug - 09 Aug)</option>
+          <option value="2026-W32">Week 32 (10 Aug - 16 Aug)</option>
+          <option value="2026-W33">Week 33 (17 Aug - 23 Aug)</option>
+          <option value="2026-W34">Week 34 (24 Aug - 30 Aug)</option>
+          <option value="2026-W35">Week 35 (31 Aug - 06 Sep)</option>
+          <option value="2026-W36">Week 36 (07 Sep - 13 Sep)</option>
+          <option value="2026-W37">Week 37 (14 Sep - 20 Sep)</option>
+          <option value="2026-W38">Week 38 (21 Sep - 27 Sep)</option>
+          <option value="2026-W39">Week 39 (28 Sep - 04 Oct)</option>
+          <option value="2026-W40">Week 40 (05 Oct - 11 Oct)</option>
+          <option value="2026-W41">Week 41 (12 Oct - 18 Oct)</option>
+          <option value="2026-W42">Week 42 (19 Oct - 25 Oct)</option>
+          <option value="2026-W43">Week 43 (26 Oct - 01 Nov)</option>
+          <option value="2026-W44">Week 44 (02 Nov - 08 Nov)</option>
+          <option value="2026-W45">Week 45 (09 Nov - 15 Nov)</option>
+          <option value="2026-W46">Week 46 (16 Nov - 22 Nov)</option>
+          <option value="2026-W47">Week 47 (23 Nov - 29 Nov)</option>
+          <option value="2026-W48">Week 48 (30 Nov - 06 Dec)</option>
+          <option value="2026-W49">Week 49 (07 Dec - 13 Dec)</option>
+          <option value="2026-W50">Week 50 (14 Dec - 20 Dec)</option>
+          <option value="2026-W51">Week 51 (21 Dec - 27 Dec)</option>
+          <option value="2026-W52">Week 52 (28 Dec - 03 Jan)</option>
         </select>
         <button class="add-btn" onclick="openModal()">+ Add Member</button>
       </div>
@@ -636,20 +680,64 @@ UID    Changes (USDT)    Percentage
       <input type="text" id="mWallet" placeholder="TRC20 or ERC20 address" />
     </div>
     <div class="modal-field">
-      <label>Monthly Trading Volume (USD)</label>
-      <input type="number" id="mVolume" placeholder="10000" min="0" />
+      <label>Commission Received (USDT)</label>
+      <input type="number" id="mVolume" placeholder="0.00" min="0" step="0.0001" />
     </div>
     <div class="modal-field">
-      <label>Month</label>
+      <label>Week</label>
       <select id="mMonth">
-        <option value="2026-05">May 2026</option>
-        <option value="2026-06">June 2026</option>
-        <option value="2026-07">July 2026</option>
-        <option value="2026-08">August 2026</option>
-        <option value="2026-09">September 2026</option>
-        <option value="2026-10">October 2026</option>
-        <option value="2026-11">November 2026</option>
-        <option value="2026-12">December 2026</option>
+          <option value="2026-W01">Week 1 (05 Jan - 11 Jan)</option>
+          <option value="2026-W02">Week 2 (12 Jan - 18 Jan)</option>
+          <option value="2026-W03">Week 3 (19 Jan - 25 Jan)</option>
+          <option value="2026-W04">Week 4 (26 Jan - 01 Feb)</option>
+          <option value="2026-W05">Week 5 (02 Feb - 08 Feb)</option>
+          <option value="2026-W06">Week 6 (09 Feb - 15 Feb)</option>
+          <option value="2026-W07">Week 7 (16 Feb - 22 Feb)</option>
+          <option value="2026-W08">Week 8 (23 Feb - 01 Mar)</option>
+          <option value="2026-W09">Week 9 (02 Mar - 08 Mar)</option>
+          <option value="2026-W10">Week 10 (09 Mar - 15 Mar)</option>
+          <option value="2026-W11">Week 11 (16 Mar - 22 Mar)</option>
+          <option value="2026-W12">Week 12 (23 Mar - 29 Mar)</option>
+          <option value="2026-W13">Week 13 (30 Mar - 05 Apr)</option>
+          <option value="2026-W14">Week 14 (06 Apr - 12 Apr)</option>
+          <option value="2026-W15">Week 15 (13 Apr - 19 Apr)</option>
+          <option value="2026-W16">Week 16 (20 Apr - 26 Apr)</option>
+          <option value="2026-W17">Week 17 (27 Apr - 03 May)</option>
+          <option value="2026-W18">Week 18 (04 May - 10 May)</option>
+          <option value="2026-W19">Week 19 (11 May - 17 May)</option>
+          <option value="2026-W20">Week 20 (18 May - 24 May)</option>
+          <option value="2026-W21">Week 21 (25 May - 31 May)</option>
+          <option value="2026-W22">Week 22 (01 Jun - 07 Jun)</option>
+          <option value="2026-W23">Week 23 (08 Jun - 14 Jun)</option>
+          <option value="2026-W24">Week 24 (15 Jun - 21 Jun)</option>
+          <option value="2026-W25">Week 25 (22 Jun - 28 Jun)</option>
+          <option value="2026-W26">Week 26 (29 Jun - 05 Jul)</option>
+          <option value="2026-W27">Week 27 (06 Jul - 12 Jul)</option>
+          <option value="2026-W28">Week 28 (13 Jul - 19 Jul)</option>
+          <option value="2026-W29">Week 29 (20 Jul - 26 Jul)</option>
+          <option value="2026-W30">Week 30 (27 Jul - 02 Aug)</option>
+          <option value="2026-W31">Week 31 (03 Aug - 09 Aug)</option>
+          <option value="2026-W32">Week 32 (10 Aug - 16 Aug)</option>
+          <option value="2026-W33">Week 33 (17 Aug - 23 Aug)</option>
+          <option value="2026-W34">Week 34 (24 Aug - 30 Aug)</option>
+          <option value="2026-W35">Week 35 (31 Aug - 06 Sep)</option>
+          <option value="2026-W36">Week 36 (07 Sep - 13 Sep)</option>
+          <option value="2026-W37">Week 37 (14 Sep - 20 Sep)</option>
+          <option value="2026-W38">Week 38 (21 Sep - 27 Sep)</option>
+          <option value="2026-W39">Week 39 (28 Sep - 04 Oct)</option>
+          <option value="2026-W40">Week 40 (05 Oct - 11 Oct)</option>
+          <option value="2026-W41">Week 41 (12 Oct - 18 Oct)</option>
+          <option value="2026-W42">Week 42 (19 Oct - 25 Oct)</option>
+          <option value="2026-W43">Week 43 (26 Oct - 01 Nov)</option>
+          <option value="2026-W44">Week 44 (02 Nov - 08 Nov)</option>
+          <option value="2026-W45">Week 45 (09 Nov - 15 Nov)</option>
+          <option value="2026-W46">Week 46 (16 Nov - 22 Nov)</option>
+          <option value="2026-W47">Week 47 (23 Nov - 29 Nov)</option>
+          <option value="2026-W48">Week 48 (30 Nov - 06 Dec)</option>
+          <option value="2026-W49">Week 49 (07 Dec - 13 Dec)</option>
+          <option value="2026-W50">Week 50 (14 Dec - 20 Dec)</option>
+          <option value="2026-W51">Week 51 (21 Dec - 27 Dec)</option>
+          <option value="2026-W52">Week 52 (28 Dec - 03 Jan)</option>
       </select>
     </div>
     <div class="modal-btns">
