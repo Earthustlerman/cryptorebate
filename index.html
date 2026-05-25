@@ -706,7 +706,7 @@
   <div class="calc-inner">
     <div class="section-tag">Free calculator</div>
     <h2 class="section-title">How much could<br>you be getting back?</h2>
-    <p class="section-sub">Enter your monthly trading volume and see exactly what you're leaving on the table.</p>
+    <p class="section-sub">Enter your weekly trading volume and see exactly what you're leaving on the table.</p>
 
     <div class="calc-box">
       <div class="calc-head">
@@ -742,7 +742,7 @@
           </div>
         </div>
 
-        <span class="field-label">Monthly trading volume</span>
+        <span class="field-label">Weekly trading volume</span>
         <div class="vol-row">
           <span class="vol-prefix">$</span>
           <input class="vol-input" type="number" id="vol" placeholder="10000" min="0" oninput="calc()" />
@@ -750,7 +750,7 @@
 
         <div class="results hidden" id="results">
           <div class="result-row">
-            <span class="result-lbl">Fees you pay monthly</span>
+            <span class="result-lbl">Fees you pay weekly</span>
             <span class="result-val muted" id="rFees">—</span>
           </div>
           <div class="result-row">
@@ -867,7 +867,7 @@
 
     document.getElementById('rFees').textContent = '$' + fees.toFixed(2);
     document.getElementById('rComm').textContent = '$' + comm.toFixed(2);
-    document.getElementById('rCash').textContent = '$' + cash.toFixed(2) + '/mo';
+    document.getElementById('rCash').textContent = '$' + cash.toFixed(2) + '/wk';
     document.getElementById('rYear').textContent = "That's $" + Math.round(yearly).toLocaleString() + ' back in your pocket per year';
 
     results.className = 'results visible';
